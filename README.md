@@ -1,207 +1,186 @@
-# Awesome-Query-Acceleration-Materialized-Views
+<div align="center">
 
-## Top Query Acceleration & Materialized Views Ecosystem
+![Awesome Query Acceleration & Materialized Views Banner](assets/banner.svg)
 
+# ⚡ Awesome Query Acceleration & Materialized Views 🚀
 
+[![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ishandutta2007/Awesome-Query-Acceleration-Materialized-Views/pulls)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ishandutta2007/Awesome-Query-Acceleration-Materialized-Views)
 
-**Curated List of SaaS Products & Open-Source GitHub Projects**  
+**A comprehensive, curated directory of SaaS data platforms and high-performance open-source engines for Query Acceleration, Incremental View Maintenance (IVM), Pre-Aggregation, and Real-Time OLAP.**
 
-*Focused on Pre-Aggregation, Incremental View Maintenance & Self-Hosted OLAP Acceleration*  
-
-**Last updated: November 2026**
-
-
-
-This repository tracks notable **SaaS platforms** and **open-source projects** for **Query Acceleration & Materialized Views**. These tools enable organizations to precompute expensive aggregations and joins, then automatically rewrite queries to hit the precomputed results—turning second-scale dashboard queries into millisecond responses without changing application SQL.
-
-
-
-**Examples** include Snowflake Materialized Views, ClickHouse Materialized Views, Materialize, StarRocks, Apache Pinot, Apache Druid, Hydrolix, Firebolt, Yellowbrick, and SingleStore (the category leaders).
-
-
-
-**Open-source emphasis**: Query Acceleration is a domain where open-source tooling is **genuinely competitive but requires matching the engine to the workload shape**. **ClickHouse** leads for single-table extreme aggregation and log/time-series workloads, with materialized views acting as insert triggers into target tables and projections offering transparent alternative sort orders . **RisingWave** and **Materialize** provide true **incremental view maintenance (IVM)**—continuous, sub-second freshness with full SQL join support and no manual refresh commands . **Apache Pinot** and **Apache Druid** excel at real-time OLAP dashboards with high concurrency, though both require operational expertise and have limited join capabilities . **Apache Doris** and **StarRocks** offer MySQL-compatible real-time warehouses with strong lakehouse acceleration . The critical caveat: **Snowflake's materialized views have significant limitations**—no joins in MVs, non-additive metrics like `COUNT(DISTINCT)` and `AVG` cannot be re-aggregated, and queries with row-access policies on referenced columns fall back to base-table scans . **Rockset shut down on September 30, 2024**, and **CrateDB** positions itself as an open-source migration target .
-
-
-
-Contributions welcome! Open a PR to add/update entries. Keep descriptions factual and link to official sites.
-
-
-
-## Table of Contents
-
-- [SaaS/Hosted Platforms](#saas-products)
-
-- [Open-Source GitHub Projects](#open-source-github-projects)
-
-- [How to Contribute](#how-to-contribute)
-
-- [Disclaimer](#disclaimer)
-
-
-
-## SaaS/Hosted Platforms
-
-
-
-- **[Snowflake Materialized Views](https://docs.snowflake.com/en/user-guide/views-materialized)**  
-
-  Precomputed aggregations maintained automatically by background processes; the query optimizer rewrites compatible queries to use the MV. **Critical limitations**: MVs cannot contain joins; non-additive metrics (`COUNT(DISTINCT)`, `AVG`, `MEDIAN`, `PERCENTILE_*`) cannot be re-aggregated across grains, so a fine-grained rollup only serves queries at exactly the stored grain . **Semantic view materializations** extend this to governed metrics with `MAX_STALENESS` freshness bounds and automatic re-aggregation of additive metrics (`SUM`, `COUNT`, `MIN`, `MAX`) . **Best for Snowflake-native BI acceleration**—but verify metric additivity before assuming broad query coverage.
-
-
-
-- **[ClickHouse Materialized Views](https://clickhouse.com/docs/en/sql-reference/statements/create/view#materialized-view)**  
-
-  Insert triggers that transform data block-by-block into explicit target tables; **refreshable MVs** periodically recompute full results for complex joins . **Projections** offer an alternative for same-table alternate sort orders with transparent optimizer selection and atomic consistency . **Production guidance**: always use `TO` clause with explicit target tables, never use `POPULATE` on large tables, batch inserts to at least 1,000 rows, and monitor with `system.query_views_log` . **Best for log, time-series, and single-table aggregation workloads** where ClickHouse's vectorized engine excels—but joins are weak and MVs do not react to `UPDATE`/`DELETE` .
-
-
-
-- **[Materialize](https://materialize.com/)**  
-
-  Cloud-only streaming SQL database with **continuous incremental view maintenance** via differential dataflow; sub-second freshness with strict serializable consistency . **Source-available (BSL)** licensing—not OSI-approved. **Best for strict-serializable streaming use cases** requiring consistent multi-table joins.
-
-
-
-- **[StarRocks](https://www.starrocks.io/)**  
-
-  Real-time OLAP database with MySQL protocol compatibility, strong lakehouse acceleration, and materialized views for pre-aggregation . **Best for lakehouse analytics with MySQL ecosystem familiarity**—but incremental MV refresh was on the roadmap rather than fully implemented as of recent updates .
-
-
-
-- **[Apache Pinot](https://pinot.apache.org/)**  
-
-  Real-time OLAP datastore from LinkedIn with strong multi-tenancy and segment assignment strategies for p99 latency control . **Best for user-facing real-time dashboards** with high concurrency—but requires operational expertise for cluster management.
-
-
-
-- **[Apache Druid](https://druid.apache.org/)**  
-
-  Real-time analytics database with segment-based immutable storage and pre-aggregation (rollup) at ingestion . **Best for time-series dashboards and ad-tech monitoring**—but operational complexity is high (four node types plus ZooKeeper) and joins are weak .
-
-
-
-- **[Hydrolix](https://hydrolix.io/)**  
-
-  Log-optimized platform on ClickHouse SQL engine with Kubernetes-native stateless architecture, separate scaling pools for ingest/query/merge, and default full indexing for high-cardinality fields . **Best for 100% log workloads** with extreme cardinality and nested JSON—but lacks ClickHouse's Netflix-scale production validation .
-
-
-
-- **[Firebolt](https://www.firebolt.io/)**  
-
-  Cloud data warehouse optimized for interactive BI performance with columnar serving and ingestion-to-query workflow . **Best for data engineering teams** building fast-serving data marts—but governance depends on pipeline instrumentation outside the engine .
-
-
-
-- **[Yellowbrick](https://www.yellowbrick.com/)**  
-
-  Data warehouse priced per vCPU with deployment flexibility (public cloud, private cloud, data center, edge) . **Best for regulated firms with residency requirements**—but no free plan and smaller community than larger vendors .
-
-
-
-- **[SingleStore](https://www.singlestore.com/)**  
-
-  Hybrid row/column store with MySQL compatibility for mixed transactional and analytical workloads . **Best for live dashboards inside applications** needing fresh data—but hourly pricing floors add up for batch BI use .
-
-
-
-## Open-Source GitHub Projects
-
-
-
-### Incremental View Maintenance Engines
-
-
-
-- **[RisingWave](https://github.com/risingwavelabs/risingwave)**  
-
-  The **leading open-source IVM engine** (Apache 2.0) with **continuous, incremental maintenance of materialized views**—no refresh commands, no schedule, full SQL join support . Features: **exactly-once processing** with barrier-based checkpointing; strong consistency across multi-table joins; cascading views where one MV references another; storage-compute decoupled architecture for single-digit-second scaling . **Integrates with Apache Iceberg** for lakehouse workflows . **Best for real-time analytics, event-driven apps, and AI agent context** requiring sub-second freshness with self-hosting—but cluster deployment currently requires Kubernetes .
-
-
-
-- **[Materialize (Self-Hosted)](https://github.com/MaterializeInc/materialize)**  
-
-  While Materialize's primary offering is cloud-only, the source code is available under BSL. **Differential dataflow**-based IVM with strict serializable consistency . **Best for teams wanting Materialize's consistency guarantees** with source-available licensing—but self-hosting is not the primary supported path.
-
-
-
-### Columnar OLAP Engines with Pre-Aggregation
-
-
-
-- **[ClickHouse](https://github.com/ClickHouse/ClickHouse)**  
-
-  The **dominant open-source columnar OLAP engine** (Apache 2.0) for single-table extreme aggregation and log/time-series workloads . Features: **MergeTree engine family** with vectorized execution and SIMD optimization; **materialized views as insert triggers** into target tables; **projections** for transparent alternate sort orders; **AggregatingMergeTree** with state functions for complex aggregations; native S3/Parquet reading . **Best for single-table aggregation at scale**—but joins are weak, `UPDATE`/`DELETE` handling is limited, and MVs require explicit target table management .
-
-
-
-- **[Apache Doris](https://github.com/apache/doris)**  
-
-  MySQL-compatible real-time data warehouse (Apache 2.0) with **row/column hybrid storage**, inverted indexes, `VARIANT` type for semi-structured data, and full SQL join support . **Best for Rockset refugees** wanting an open-source migration target with real-time updates and deletions .
-
-
-
-- **[Apache Pinot](https://github.com/apache/pinot)**  
-
-  LinkedIn-origin real-time OLAP datastore (Apache 2.0) with mature segment assignment strategies for p99 latency . **Best for user-facing real-time analytics** with multi-tenant requirements—but requires operational expertise.
-
-
-
-- **[Apache Druid](https://github.com/apache/druid)**  
-
-  Real-time analytics database (Apache 2.0) with segment-based immutable storage and rollup at ingestion . **Best for high-concurrency time-series dashboards**—but operational complexity is high and joins are weak.
-
-
-
-### Additional Strong Open-Source Options
-
-
-
-- **CrateDB** — Open-source distributed SQL database (Apache 2.0) built on Lucene with real-time indexing of structured and semi-structured data; positioned as a **Rockset migration target** with PostgreSQL wire protocol compatibility and vector search . **Best for teams migrating off Rockset** or wanting real-time analytics with SQL familiarity.
-
-- **PostgreSQL + pg_ivm** — PostgreSQL materialized views are batch-only without extensions; `pg_ivm` adds basic incremental maintenance but **is not yet production-ready and blocks writes during maintenance** . **Best for OLTP databases** with occasional analytics needs—not high-frequency IVM.
-
-
-
-**Frameworks for building custom systems**: For **continuous IVM with full SQL joins and sub-second freshness**, RisingWave is the leading open-source option with Apache 2.0 licensing . For **single-table extreme aggregation and log workloads**, ClickHouse with materialized views or projections . For **MySQL-compatible real-time analytics**, Apache Doris . For **user-facing high-concurrency dashboards**, Pinot or Druid . **Snowflake's MV limitations** (no joins, non-additive metrics) make it unsuitable for complex query acceleration—plan for base-table scans or semantic view materializations with additive metrics only .
-
-
-
-## How to Contribute
-
-
-
-1. Fork the repo.
-
-2. Add/edit entries in `README.md` (follow existing format).
-
-3. Include: name, link, 1–2 sentence description, and whether it's SaaS or open-source.
-
-4. Submit PR with a short explanation.
-
-
-
-Star the repo if you find it useful!
-
-
-
-## Disclaimer
-
-
-
-- This is a **community-curated** list — not exhaustive and not an endorsement.
-
-- Query acceleration and materialized view platforms handling production data must comply with organizational security policies; **materialized views store precomputed data that may not reflect row-level security policies**—verify access controls before exposing accelerated results.
-
-- **Materialized view acceleration is highly workload-dependent**—Snowflake MVs cannot contain joins and cannot re-aggregate non-additive metrics (`COUNT(DISTINCT)`, `AVG`, percentiles), limiting their broad query coverage . ClickHouse MVs are insert triggers, not self-maintaining caches, and require explicit target table management . **RisingWave provides true continuous IVM** with full SQL join support and sub-second freshness, but requires Kubernetes deployment . **Rockset shut down in September 2024**; CrateDB and Apache Doris position themselves as migration targets . Choose based on workload shape (single-table vs. multi-table joins), freshness requirements (batch vs. continuous), and operational tolerance.
-
-- Verify license terms for commercial use; RisingWave uses Apache 2.0 , ClickHouse uses Apache 2.0 , Apache Doris uses Apache 2.0 , and Materialize uses BSL (source-available) .
-
-
+</div>
 
 ---
 
+## 📑 Table of Contents
+- [📌 Overview & Architectural Mechanics](#-overview--architectural-mechanics)
+- [📊 Sector Overview & Market Dynamics](#-sector-overview--market-dynamics)
+- [☁️ SaaS & Hosted Platforms](#-saashosted-platforms)
+- [🔓 Open-Source GitHub Projects](#-open-source-github-projects)
+  - [⚡ Top Open-Source Engines (Ranked by Stars)](#-top-open-source-engines-ranked-by-stars)
+  - [⚙️ Additional Specialized Engines](#-additional-specialized-engines)
+- [🔍 Workload Selection Guide](#-workload-selection-guide)
+- [🤝 How to Contribute](#-how-to-contribute)
+- [⚠️ Disclaimer](#-disclaimer)
 
+---
 
-**Made for data platform engineers, analytics architects, and organizations building query acceleration infrastructure.**  
+## 📌 Overview & Architectural Mechanics
 
-Let's make query acceleration more open, but with clear eyes about the workload-specific limitations that define which engine actually accelerates your queries—and which quietly falls back to full scans.
+Query acceleration platforms eliminate expensive multi-table joins, window functions, and high-cardinality group-by scans by maintaining precomputed state. When an application or BI client issues SQL queries, an intelligent query optimizer automatically inspects available materialized views (MVs), projections, or pre-aggregated cubes and transparently rewrites queries to execute in sub-second time without altering client applications.
+
+Modern query acceleration encompasses three core paradigms:
+1. **🔄 Incremental View Maintenance (IVM):** Continuous differential state streaming that processes only modified records and state changes (deltas), ensuring sub-second view freshness without expensive batch table recalculations.
+2. **📈 Insert Trigger & Projection Materialization:** Micro-batched inserts that stream append-only blocks directly into pre-aggregated target tables (e.g., ClickHouse `AggregatingMergeTree`), coupled with localized sorting projections for alternate access patterns.
+3. **🧊 Lakehouse & Semantic Pre-Aggregation:** Asynchronous semantic-layer cubes and lakehouse caching layers (e.g., Apache Iceberg/Parquet integration) providing transparent cost and latency optimization across massive cold object storage.
+
+---
+
+## 📊 Sector Overview & Market Dynamics
+
+The specialized **Query Acceleration, Materialized Views, and High-Performance Real-Time OLAP** market represents a vital, high-growth segment within the broader real-time analytics market (valued at **$51.36B in 2024** and projected to exceed **$150B by 2030**), with the dedicated in-memory and real-time analytical database tier surpassing **$11B in 2025**.
+
+The sector exhibits **moderate fragmentation with strong consolidation dynamics** around cloud infrastructure giants, while preserving deep technical niches:
+- **Concentrated Cloud Layer:** Hyperscale cloud data warehouses (Snowflake, Databricks, BigQuery) dominate multi-tenant enterprise data estates and general BI workloads.
+- **Fragmented Real-Time & High-Concurrency Tier:** Demands for user-facing, sub-second latency, streaming joins, and observability have created thriving, specialized categories led by vectorized OLAP engines (ClickHouse, StarRocks, Apache Doris) and continuous differential stream maintainers (RisingWave, Materialize, Feldera), ensuring pure-play query acceleration remains highly competitive and resistant to single-vendor capture.
+
+---
+
+## ☁️ SaaS/Hosted Platforms
+
+The following hosted SaaS engines, managed cloud warehouses, and enterprise acceleration services are ranked in descending order by parent company scale (valuation / market capitalization).
+
+| 🏢 Platform | 💰 Scale (Company Valuation / Market Cap) | 🏷️ Starting Pricing Tier | 🎁 Free Tier Limit / Free Trial Duration | 🎯 Primary Acceleration Focus & MV Mechanism |
+| :--- | :--- | :--- | :--- | :--- |
+| **[Snowflake Materialized Views](https://docs.snowflake.com/en/user-guide/views-materialized)** | **$108.0B+** *(NYSE: SNOW Market Cap)* | **$2.00 / credit** *(Standard Edition on-demand baseline rate)* | **30-day free trial** with **$400 in usage credits** (no credit card required) | Automated background serverless compute maintenance; query optimizer rewrites queries matching single-table additive aggregations. |
+| **[ClickHouse Cloud](https://clickhouse.com/docs/en/sql-reference/statements/create/view#materialized-view)** | **$15.0B** *(Series D valuation; $250M+ ARR)* | **$0.18 / ClickHouse Compute Unit (CCU) / hour** *(Basic tier pay-as-you-go)* | **30-day free trial** with **$300 in free cloud usage credits** | Vectorized insert triggers to explicit target tables (`AggregatingMergeTree`) and projections for alternate sort orders. |
+| **[Firebolt](https://www.firebolt.io/)** | **$1.4B** *(Series C valuation; ~$40M estimated ARR)* | **$0.92 / engine hour** *(Billed per second with auto-stop/resume)* | **Free trial** with **$200 in free evaluation credits**; permanent free self-hosted Firebolt Core | Columnar query engine with sparse indexing, aggregating indexes, and decoupled compute engines tuned for interactive BI data marts. |
+| **[SingleStore Helios](https://www.singlestore.com/)** | **$1.3B** *(PE buyout valuation; $123M+ ARR)* | **$0.99 / hour** *(Helios S-00 Standard 2 vCPU compute instance)* | **Forever Free Tier** limited to **1 GB compressed data** (~4 GB raw); or 30-day trial with **$600 credits** | Hybrid transactional/analytical processing (HTAP) with universal storage and sub-millisecond in-memory table acceleration. |
+| **[Imply Polaris](https://imply.io/)** | **$1.1B** *(Series D unicorn valuation; Apache Druid creator)* | **$0.14 / Imply Compute Unit (ICU) / hour** *(Elastic real-time tier)* | **30-day free trial** with **$500 credits**, 1 project limit, waived streaming ingestion fees | Fully managed Apache Druid cloud service featuring ingestion rollup, segment immutable caching, and user-facing dashboards. |
+| **[Yellowbrick](https://www.yellowbrick.com/)** | **~$700M** *(Series C enterprise valuation; $292M total raised)* | **$0.28 / vCPU / hour** *(Software on-demand pay-as-you-go)* | **30-day free trial** for cloud deployments (AWS / Azure / GCP) | MPP analytic warehouse designed for hybrid multi-cloud and on-premises deployments with hardware-accelerated execution. |
+| **[Materialize Cloud](https://materialize.com/)** | **$600M** *(Series D valuation; $100M+ total raised)* | **Usage-based credits** *(Starting at ~$0.40 / compute credit / hour)* | **7-day free trial** (max 4 credits/hour consumption rate limit); forever free developer emulator | Continuous Incremental View Maintenance (IVM) built on Timely and Differential Dataflow for sub-second, strictly serializable joins. |
+| **[StarTree Cloud](https://startree.ai/)** | **~$480M** *(Series B valuation; $75M total raised)* | **Tiered compute starting at ~$1.20 / hour** *(Contact / marketplace quote)* | **14-day free trial** available via custom onboarding & AWS/GCP marketplace | Cloud-native Apache Pinot platform providing StarTree ThirdEye anomaly detection and high-concurrency p99 latency guarantees. |
+| **[Hydrolix](https://hydrolix.io/)** | **~$350M** *(Series C valuation; $148M total raised)* | **$0.20 / GB ingested** *(Self-Managed BYOC); $0.31 / GB (SaaS)* | **7-day free trial** via AWS Marketplace and managed trials upon signup | Log-optimized streaming platform on ClickHouse SQL engine with decoupled compute pools and lossless compression. |
+| **[CrateDB Cloud](https://crate.io/)** | **~$85M** *(Series B funding valuation; $33M total raised)* | **$0.12 / cluster hour** *(CR-0 Shared instance configuration)* | **14-day free trial** with access to shared clusters and full console features | Distributed SQL database built on Lucene inverted indexes; official open migration destination for Rockset workloads. |
+
+---
+
+## 🔓 Open-Source GitHub Projects
+
+Explore the most popular open-source query acceleration engines, incremental view maintenance databases, and analytical layer frameworks.
+
+### ⚡ Top Open-Source Engines (Ranked by Stars)
+
+The following open-source query acceleration repositories are sorted in descending order by GitHub stargazers count:
+
+1. **[ClickHouse](https://github.com/ClickHouse/ClickHouse)**  
+   [![Stars](https://img.shields.io/github/stars/ClickHouse/ClickHouse?style=social&color=white)](https://github.com/ClickHouse/ClickHouse/stargazers)  
+   The industry-standard open-source columnar database management system (DBMS) designed for real-time analytical reporting. Employs vectorized SIMD execution, **materialized views functioning as stream insert triggers** into target tables, and **projections** for transparent, multi-dimensional query routing without query modifications.
+
+2. **[DuckDB](https://github.com/duckdb/duckdb)**  
+   [![Stars](https://img.shields.io/github/stars/duckdb/duckdb?style=social&color=white)](https://github.com/duckdb/duckdb/stargazers)  
+   An in-process SQL OLAP database management system built for analytical query acceleration. Features vectorized query processing, single-file zero-copy architecture, instant parquet acceleration, and client-side materialized view caching inside Python, R, Node, and browser WASM runtimes.
+
+3. **[Cube](https://github.com/cube-js/cube)**  
+   [![Stars](https://img.shields.io/github/stars/cube-js/cube?style=social&color=white)](https://github.com/cube-js/cube/stargazers)  
+   Universal semantic layer and pre-aggregation query acceleration engine. Automatically translates raw analytics requests into pre-aggregated summary tables across multiple data stores, orchestrating background warming, rollup hierarchies, and transparent SQL rewriting.
+
+4. **[Apache Doris](https://github.com/apache/doris)**  
+   [![Stars](https://img.shields.io/github/stars/apache/doris?style=social&color=white)](https://github.com/apache/doris/stargazers)  
+   A high-performance, real-time analytical data warehouse based on MPP technology. Offers MySQL wire compatibility, **asynchronous & synchronous materialized views**, inverted indexing, automated query rewriting, and sub-second analytical aggregations over massive datasets.
+
+5. **[Apache Druid](https://github.com/apache/druid)**  
+   [![Stars](https://img.shields.io/github/stars/apache/druid?style=social&color=white)](https://github.com/apache/druid/stargazers)  
+   High-performance real-time analytics database built for streaming event ingestion and fast ad-hoc queries. Incorporates immutable column-oriented segments with automatic ingestion-time rollups, bitmap indices, and caching for high-concurrency event telemetry.
+
+6. **[StarRocks](https://github.com/StarRocks/starrocks)**  
+   [![Stars](https://img.shields.io/github/stars/StarRocks/starrocks?style=social&color=white)](https://github.com/StarRocks/starrocks/stargazers)  
+   Next-generation sub-second OLAP lakehouse engine. Features asynchronous multi-table materialized views, cost-based optimizer (CBO) query rewriting, SIMD vectorization, and direct query acceleration over Apache Iceberg, Delta Lake, and Hudi.
+
+7. **[Apache DataFusion](https://github.com/apache/datafusion)**  
+   [![Stars](https://img.shields.io/github/stars/apache/datafusion?style=social&color=white)](https://github.com/apache/datafusion/stargazers)  
+   Extensible query engine written in Rust using Apache Arrow format as memory state. Frequently embedded to construct customized query acceleration layers, in-memory partition caches, and specialized vectorized analytical engines.
+
+8. **[RisingWave](https://github.com/risingwavelabs/risingwave)**  
+   [![Stars](https://img.shields.io/github/stars/risingwavelabs/risingwave?style=social&color=white)](https://github.com/risingwavelabs/risingwave/stargazers)  
+   Leading open-source distributed SQL streaming database (Apache 2.0). Provides **true Incremental View Maintenance (IVM)** with continuous state maintenance, sub-second freshness, multi-table streaming joins, cascading views, and native Apache Iceberg lakehouse integration.
+
+9. **[Materialize (Source-Available)](https://github.com/MaterializeInc/materialize)**  
+   [![Stars](https://img.shields.io/github/stars/MaterializeInc/materialize?style=social&color=white)](https://github.com/MaterializeInc/materialize/stargazers)  
+   Streaming SQL database powered by Timely and Differential Dataflow. Maintained under the Business Source License (BSL), offering strictly serializable ACID consistency across dynamic multi-table materialized views.
+
+10. **[Apache Pinot](https://github.com/apache/pinot)**  
+    [![Stars](https://img.shields.io/github/stars/apache/pinot?style=social&color=white)](https://github.com/apache/pinot/stargazers)  
+    Real-time distributed OLAP datastore originated at LinkedIn. Designed to execute low-latency, user-facing analytical queries with StarTree index pre-aggregation, multi-tenant resource isolation, and horizontal scale.
+
+11. **[Apache Calcite](https://github.com/apache/calcite)**  
+    [![Stars](https://img.shields.io/github/stars/apache/calcite?style=social&color=white)](https://github.com/apache/calcite/stargazers)  
+    Dynamic data management framework providing the foundational query optimization and **materialized view query rewriting algorithms** (lattice recognition, pull-up, push-down) implemented across Snowflake, Drill, and Hive.
+
+12. **[CrateDB](https://github.com/crate/crate)**  
+    [![Stars](https://img.shields.io/github/stars/crate/crate?style=social&color=white)](https://github.com/crate/crate/stargazers)  
+    Distributed SQL database combining the simplicity of SQL with the horizontal scaling and indexing power of Elasticsearch/Lucene. Frequently adopted as an open-source migration alternative for discontinued Rockset installations.
+
+13. **[Feldera](https://github.com/feldera/feldera)**  
+    [![Stars](https://img.shields.io/github/stars/feldera/feldera?style=social&color=white)](https://github.com/feldera/feldera/stargazers)  
+    Fast engine for continuous analytics and incremental computation based on DBSP theory. Computes arbitrary recursive and non-recursive SQL queries over streaming inputs with minimal memory overhead.
+
+14. **[pg_ivm](https://github.com/sraoss/pg_ivm)**  
+    [![Stars](https://img.shields.io/github/stars/sraoss/pg_ivm?style=social&color=white)](https://github.com/sraoss/pg_ivm/stargazers)  
+    PostgreSQL extension that introduces Incremental View Maintenance (IVM). Automatically updates materialized view contents immediately when base tables are modified via DML, avoiding full `REFRESH MATERIALIZED VIEW` commands.
+
+---
+
+### ⚙️ Additional Specialized Engines
+
+- **[Hydrolix](https://hydrolix.io/)** — Stateless ClickHouse-powered streaming log lakehouse designed for high-cardinality indexing and extreme write throughput.
+- **[Yellowbrick](https://www.yellowbrick.com/)** — Enterprise data warehouse engineered for hybrid multi-cloud and bare-metal environments requiring ultra-low latency SQL execution.
+- **[SingleStore](https://www.singlestore.com/)** — Distributed relational database optimized for concurrent ingestion, real-time analytics, and transactional low latency.
+
+---
+
+## 🔍 Workload Selection Guide
+
+Selecting the appropriate query acceleration architecture requires aligning your workload characteristics with engine execution models:
+
+```
+Workload Pattern                      Recommended Architecture / Engine
+----------------------------------------------------------------------------------------------------
+Continuous Streaming Joins (IVM)   --> RisingWave (Apache 2.0), Materialize (BSL), Feldera
+Extreme Single-Table Aggregations  --> ClickHouse (MergeTree & Projections), DuckDB
+Multi-Table Lakehouse Acceleration --> StarRocks, Apache Doris, Apache DataFusion
+High-Concurrency User Dashboards   --> Apache Pinot (StarTree Index), Apache Druid
+Semantic Pre-Aggregation / Metrics --> Cube, Apache Calcite
+Embedded / In-Process Analytics    --> DuckDB, Apache DataFusion
+Enterprise Managed Cloud Warehouse --> Snowflake (Single-table MVs), Firebolt, SingleStore
+```
+
+---
+
+## 🤝 How to Contribute
+
+Contributions are warmly welcomed! Help keep this ecosystem guide up-to-date:
+
+1. **Fork** the repository.
+2. **Add or enhance** platform and engine entries (ensure pricing, GitHub stars, and architectural specifics are accurate).
+3. Follow the established markdown format and verify all links.
+4. Open a **Pull Request** with a concise description of your changes.
+
+⭐ **If this directory helps your data architecture decisions, please give it a star!**
+
+---
+
+## ⚠️ Disclaimer
+
+- This curated list is maintained by the community for educational and architectural evaluation purposes; inclusion does not constitute a commercial endorsement.
+- Materialized views and pre-aggregated caches store derived data representations. Always verify that organization-wide security boundaries, row-level security (RLS), and column masking policies are consistently respected by optimizer rewrites.
+- Product pricing, trial allocations, and corporate valuations reflect publicly available market intelligence and are subject to change by respective vendors.
+
+---
+
+<div align="center">
+  <b>Built for Data Architects, Analytics Engineers, and High-Performance Infrastructure Teams.</b>
+</div>

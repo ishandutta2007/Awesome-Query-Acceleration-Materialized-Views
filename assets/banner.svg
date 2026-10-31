@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" width="100%" height="360" style="background:#0b0f19;border-radius:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;overflow:hidden;">
+  <defs>
+    <!-- Background Gradients -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070a13" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#818cf8" stop-opacity="0.0" />
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.85" />
+    </linearGradient>
+
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <style>
+      @keyframes floatData {
+        0% { transform: translateY(0px) translateX(0px); opacity: 0.2; }
+        50% { transform: translateY(-12px) translateX(8px); opacity: 0.7; }
+        100% { transform: translateY(0px) translateX(0px); opacity: 0.2; }
+      }
+      @keyframes beamMove {
+        0% { stroke-dashoffset: 400; }
+        100% { stroke-dashoffset: 0; }
+      }
+      @keyframes pulseNode {
+        0%, 100% { r: 5px; opacity: 0.4; }
+        50% { r: 8px; opacity: 0.95; }
+      }
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.25; transform: scale(1); }
+        50% { opacity: 0.45; transform: scale(1.08); }
+      }
+      .bg-grid { stroke: #334155; stroke-opacity: 0.18; stroke-width: 1; }
+      .data-stream { stroke-dasharray: 12, 16; animation: beamMove 12s linear infinite; }
+      .particle-1 { animation: floatData 6s ease-in-out infinite; }
+      .particle-2 { animation: floatData 8s ease-in-out infinite 1.5s; }
+      .particle-3 { animation: floatData 7s ease-in-out infinite 3s; }
+      .pulsing-dot { animation: pulseNode 3s ease-in-out infinite; }
+      .glow-orb { animation: pulseGlow 6s ease-in-out infinite alternate; transform-origin: center; }
+    </style>
+  </defs>
+
+  <!-- Deep Base Canvas -->
+  <rect width="100%" height="100%" fill="url(#bgGrad)" />
+
+  <!-- Animated Dynamic Ambient Lighting / Glows in Background -->
+  <circle class="glow-orb" cx="150" cy="80" r="140" fill="url(#glowGrad)" />
+  <circle class="glow-orb" cx="1060" cy="270" r="160" fill="url(#glowGrad)" />
+
+  <!-- Architecture Grid Lines -->
+  <g class="bg-grid">
+    <line x1="0" y1="60" x2="1200" y2="60" />
+    <line x1="0" y1="120" x2="1200" y2="120" />
+    <line x1="0" y1="180" x2="1200" y2="180" />
+    <line x1="0" y1="240" x2="1200" y2="240" />
+    <line x1="0" y1="300" x2="1200" y2="300" />
+    <line x1="150" y1="0" x2="150" y2="360" />
+    <line x1="300" y1="0" x2="300" y2="360" />
+    <line x1="450" y1="0" x2="450" y2="360" />
+    <line x1="600" y1="0" x2="600" y2="360" />
+    <line x1="750" y1="0" x2="750" y2="360" />
+    <line x1="900" y1="0" x2="900" y2="360" />
+    <line x1="1050" y1="0" x2="1050" y2="360" />
+  </g>
+
+  <!-- Dynamic Data Pipeline Flow / Vector Circuit Lines -->
+  <g stroke="#38bdf8" stroke-width="2" fill="none" opacity="0.6">
+    <path class="data-stream" d="M 80,40 L 320,40 L 440,100 L 760,100 L 880,40 L 1120,40" />
+    <path class="data-stream" d="M 80,320 L 320,320 L 440,260 L 760,260 L 880,320 L 1120,320" style="animation-duration: 9s; stroke: #818cf8;" />
+    <path class="data-stream" d="M 120,180 L 360,180 L 420,220 L 780,220 L 840,180 L 1080,180" style="animation-duration: 15s; stroke: #c084fc; stroke-dasharray: 8, 12;" />
+  </g>
+
+  <!-- Floating Dynamic Tech Particles -->
+  <g class="particle-1">
+    <circle cx="280" cy="85" r="3" fill="#38bdf8" />
+    <circle cx="780" cy="55" r="4" fill="#818cf8" />
+    <polygon points="980,110 986,120 974,120" fill="#38bdf8" opacity="0.5" />
+  </g>
+  <g class="particle-2">
+    <circle cx="180" cy="280" r="3.5" fill="#c084fc" />
+    <circle cx="890" cy="275" r="4.5" fill="#38bdf8" />
+    <rect x="350" y="270" width="6" height="6" fill="#818cf8" opacity="0.6" rx="1" />
+  </g>
+  <g class="particle-3">
+    <circle cx="520" cy="35" r="3" fill="#818cf8" />
+    <circle cx="680" cy="325" r="3.5" fill="#c084fc" />
+  </g>
+
+  <!-- Dynamic Circuit Pulsing Nodes -->
+  <circle class="pulsing-dot" cx="440" cy="100" r="5" fill="#38bdf8" />
+  <circle class="pulsing-dot" cx="760" cy="100" r="5" fill="#818cf8" style="animation-delay: 1s;" />
+  <circle class="pulsing-dot" cx="440" cy="260" r="5" fill="#818cf8" style="animation-delay: 1.5s;" />
+  <circle class="pulsing-dot" cx="760" cy="260" r="5" fill="#c084fc" style="animation-delay: 2s;" />
+
+  <!-- Central Foreground Content Container Card -->
+  <rect x="140" y="55" width="920" height="250" rx="16" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.2" filter="drop-shadow(0 15px 35px rgba(0,0,0,0.6))" />
+
+  <!-- Modern Top Accent Indicator Line -->
+  <rect x="140" y="55" width="920" height="3" rx="1.5" fill="url(#accentGrad)" />
+
+  <!-- Badge / Micro-Pill in Header -->
+  <g transform="translate(470, 75)">
+    <rect width="260" height="28" rx="14" fill="#1e293b" stroke="#38bdf8" stroke-width="0.8" opacity="0.9" />
+    <circle cx="16" cy="14" r="4" fill="#10b981" />
+    <text x="28" y="18" fill="#e2e8f0" font-size="11" font-weight="600" letter-spacing="1.2">HIGH PERFORMANCE OLAP &amp; IVM</text>
+  </g>
+
+  <!-- Foreground Title -->
+  <text x="600" y="148" text-anchor="middle" fill="#f8fafc" font-size="34" font-weight="800" letter-spacing="-0.5">
+    Query Acceleration &amp; Materialized Views
+  </text>
+
+  <!-- Foreground Subtitle -->
+  <text x="600" y="186" text-anchor="middle" fill="url(#accentGrad)" font-size="16" font-weight="600" letter-spacing="0.2">
+    Pre-Aggregation &#8226; Incremental View Maintenance (IVM) &#8226; Real-Time OLAP &amp; Caching
+  </text>
+
+  <!-- Foreground Description -->
+  <text x="600" y="214" text-anchor="middle" fill="#94a3b8" font-size="13.5" font-weight="400">
+    Curated directory of SaaS architectures and open-source engines powering sub-second analytic queries at scale.
+  </text>
+
+  <!-- Bottom Metric Pills -->
+  <g transform="translate(260, 245)">
+    <!-- Pill 1 -->
+    <rect x="0" y="0" width="190" height="34" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="95" y="21" text-anchor="middle" fill="#38bdf8" font-size="12" font-weight="600">&#9889; Sub-Second Latency</text>
+    
+    <!-- Pill 2 -->
+    <rect x="220" y="0" width="220" height="34" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="330" y="21" text-anchor="middle" fill="#818cf8" font-size="12" font-weight="600">&#128260; Continuous View Freshness</text>
+
+    <!-- Pill 3 -->
+    <rect x="460" y="0" width="200" height="34" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <text x="560" y="21" text-anchor="middle" fill="#c084fc" font-size="12" font-weight="600">&#128640; Zero Query Rewrite</text>
+  </g>
+</svg>
