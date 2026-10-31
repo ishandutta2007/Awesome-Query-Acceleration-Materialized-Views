@@ -4,10 +4,12 @@
 
 # ⚡ Awesome Query Acceleration & Materialized Views 🚀
 
+<a href="https://github.com/ishandutta2007/Awesome-Awesome-Awesome"><img src="https://img.shields.io/badge/Awesome-%E2%9C%94-blueviolet?style=flat-square&logo=github" alt="Awesome"/></a><a href="https://discord.gg/jc4xtF58Ve"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" /></a>
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ishandutta2007/Awesome-Query-Acceleration-Materialized-Views/pulls)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ishandutta2007/Awesome-Query-Acceleration-Materialized-Views)
+<a href="https://github.com/ishandutta2007"><img alt="GitHub followers" src="https://img.shields.io/github/followers/ishandutta2007?label=Follow" /></a>
 
 **A comprehensive, curated directory of SaaS data platforms and high-performance open-source engines for Query Acceleration, Incremental View Maintenance (IVM), Pre-Aggregation, and Real-Time OLAP.**
 
@@ -24,6 +26,8 @@
   - [⚙️ Additional Specialized Engines](#-additional-specialized-engines)
 - [🔍 Workload Selection Guide](#-workload-selection-guide)
 - [🤝 How to Contribute](#-how-to-contribute)
+- [💖 Support](#-support)
+- [⭐ Star History](#-star-history)
 - [⚠️ Disclaimer](#-disclaimer)
 
 ---
@@ -170,6 +174,24 @@ Contributions are warmly welcomed! Help keep this ecosystem guide up-to-date:
 4. Open a **Pull Request** with a concise description of your changes.
 
 ⭐ **If this directory helps your data architecture decisions, please give it a star!**
+
+---
+
+## 💖 Support
+
+A huge thank you to everyone exploring, adopting, and advancing the modern query acceleration ecosystem! 
+
+If you find this repository valuable:
+- ⭐ **Star** this repository on GitHub to help others discover it.
+- 🍴 **Fork** and contribute additions, updates, or benchmark findings.
+- 📢 **Share** this list with fellow data engineers, architects, and analytics teams.
+- ☕ **Buy a coffee / Sponsor**: Support ongoing maintenance and curation via the [GitHub Sponsors Dashboard](https://github.com/sponsors/ishandutta2007).
+
+---
+
+## ⭐ Star History
+
+[![Star History Chart](https://star-history.dera.page/svg?repos=ishandutta2007/Awesome-Query-Acceleration-Materialized-Views&type=date&legend=top-left)](https://star-history.dera.page/#ishandutta2007/Awesome-Query-Acceleration-Materialized-Views&type=date&legend=top-left)
 
 ---
 
