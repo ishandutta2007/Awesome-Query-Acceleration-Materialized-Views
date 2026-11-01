@@ -169,7 +169,7 @@ Enterprise Managed Cloud Warehouse --> Snowflake (Single-table MVs), Firebolt, S
 Contributions are warmly welcomed! Help keep this ecosystem guide up-to-date:
 
 1. **Fork** the repository.
-2. **Add or enhance** platform and engine entries (ensure pricing, GitHub stars, and architectural specifics are accurate).
+2. **Add or enhance** platform and engine entries (ensure pricing, GitHub_Stars, and architectural specifics are accurate).
 3. Follow the established markdown format and verify all links.
 4. Open a **Pull Request** with a concise description of your changes.
 
